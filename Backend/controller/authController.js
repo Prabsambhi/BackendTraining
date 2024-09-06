@@ -91,6 +91,13 @@ exports.loginController = async (req, res) => {
       expiresIn: "7d",
     }); // This will generate a JWT token for our user
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
     res.status(200).send({
       success: true,
       message: "Login Successfull",
@@ -99,7 +106,7 @@ exports.loginController = async (req, res) => {
         name: user.name,
         email: user.email,
       },
-      token, // Send the token to our client (Frontend)
+      // Send the token to our client (Frontend)
     });
   } catch (error) {
     res.status(500).send({
@@ -222,4 +229,16 @@ exports.resetPasswordController = async (req, res) => {
       error,
     });
   }
+};
+
+exports.logoutController = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  res.status(200).send({
+    success: true,
+    message: "Logout Successfull",
+  });
 };
