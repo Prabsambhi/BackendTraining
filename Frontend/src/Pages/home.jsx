@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "../contextApi/authContext";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const Home = () => {
   const { auth, setAuth } = useAuth();
@@ -12,7 +13,7 @@ const Home = () => {
       console.log(response);
 
       setAuth({ user: null });
-      
+
       localStorage.removeItem("auth");
     } catch (err) {
       console.log(err);

@@ -5,6 +5,8 @@ import Login from "./Pages/login";
 import ForgotPassword from "./Pages/forgotPassword";
 import ResetPassword from "./Pages/resetPassword";
 import Home from "./Pages/home";
+import Dashboard from "./Pages/dashboard";
+import PrivateRoute from "./PrivateRoute/privateRoute";
 
 const App = () => {
   return (
@@ -15,6 +17,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </>
   );

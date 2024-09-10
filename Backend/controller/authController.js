@@ -93,8 +93,9 @@ exports.loginController = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
+      sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -118,7 +119,11 @@ exports.loginController = async (req, res) => {
 };
 
 exports.dashboardController = (req, res) => {
-  res.send("You are on dashboard page");
+  // res.send("You are on dashboard page");
+  res.status(200).send({
+    success: true,
+    message: "Dashboard Page",
+  });
 };
 
 exports.forgotPasswordController = async (req, res) => {
@@ -232,10 +237,13 @@ exports.resetPasswordController = async (req, res) => {
 };
 
 exports.logoutController = (req, res) => {
-  res.clearCookie("token", {
+  const token = req.cookies.token;
+  res.clearCookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    // secure: process.env.NODE_ENV === "production",
+    secure: false,
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
   res.status(200).send({
     success: true,

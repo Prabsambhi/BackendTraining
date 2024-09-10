@@ -19,4 +19,10 @@ router.post("/forgot-password", forgotPasswordController);
 router.post("/reset-password/:token", resetPasswordController);
 router.post("/logout", logoutController);
 
+router.get("/verify-user", requiredSignIn, (req, res) => {
+  res.status(200).send({
+    success: true,
+  });
+});
+
 module.exports = router;
