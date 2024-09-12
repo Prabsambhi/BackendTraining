@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contextApi/authContext";
+import { useAuth } from "../../contextApi/authContext";
 axios.defaults.withCredentials = true;
 
 const Login = () => {

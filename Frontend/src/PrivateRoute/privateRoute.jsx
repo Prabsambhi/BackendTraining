@@ -4,23 +4,30 @@ import { Navigate, Outlet } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const PrivateRoute = () => {
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState(null);
 
   const checkAuth = async () => {
-    const res = await axios.get("http://localhost:3000/auth/dashboard");
+    try {
+      const res = await axios.get("http://localhost:3000/auth/verify-user");
 
-    console.log(res.data.success);
-    
-    if (res.data.success) {
-      setCheck(true);
-    } else {
+      if (res.data.success) {
+        setCheck(true);
+      } else {
+        setCheck(false);
+      }
+    } catch (err) {
       setCheck(false);
+      console.log(err);
     }
   };
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  if (check === null) {
+    return <h1>Loading....</h1>;
+  }
 
   return check ? <Outlet /> : <Navigate to="/login" />;
 };
