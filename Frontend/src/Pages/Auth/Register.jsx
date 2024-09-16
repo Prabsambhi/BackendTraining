@@ -25,6 +25,7 @@ schema
   .oneOf(["Passw0rd", "Password123", "12345678"]); // Blacklist these values
 
 const Register = () => {
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

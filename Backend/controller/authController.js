@@ -2,6 +2,28 @@ const userModel = require("../Model/userModel");
 const { hashPassword, comparePassword } = require("../helpers/hashPassword");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const validator = require("validator");
+const PasswordValidator = require("password-validator");
+
+const schema = new PasswordValidator();
+
+schema
+  .is()
+  .min(8) // Minimum length 8
+  .is()
+  .max(40) // Maximum length 40
+  .has()
+  .uppercase() // Must have uppercase letters
+  .has()
+  .lowercase() // Must have lowercase letters
+  .has()
+  .digits(2) // Must have at least 2 digits
+  .has()
+  .not()
+  .spaces() // Should not have spaces
+  .is()
+  .not()
+  .oneOf(["Passw0rd", "Password123", "12345678"]); // Blacklist these values
 
 exports.registerController = async (req, res) => {
   try {
@@ -10,14 +32,23 @@ exports.registerController = async (req, res) => {
     if (!name) {
       return res.send({ error: "Name is required" });
     }
+
     if (!email) {
       return res.send({ error: "Email is required" });
+    } else if (!validator.isEmail(email)) {
+      return res.send({ error: "Please write your email in correct format" });
     }
+
     if (!password) {
       return res.send({ error: "Password is required" });
+    } else if (!schema.validate(password)) {
+      return res.send({ error: "Password is not strong enough" });
     }
+
     if (!phone) {
       return res.send({ error: "Phone is required" });
+    } else if (!validator.isMobilePhone(phone, "any")) {
+      return res.send({ error: "Phone number not valid" });
     }
 
     const existingUser = await userModel.findOne({ email });
