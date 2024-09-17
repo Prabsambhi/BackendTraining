@@ -1,13 +1,14 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const dotenv = require("dotenv");
+
 const demoRoute = require("./routes/demoRoute");
 const authRoutes = require("./routes/authRoutes");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 
-dotenv.config();
 connectDB();
 
 app.use(

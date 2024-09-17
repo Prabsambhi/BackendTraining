@@ -27,7 +27,7 @@ schema
 
 exports.registerController = async (req, res) => {
   try {
-    const { name, email, password, phone } = req.body;
+    const { name, email, password, phone, profilePic } = req.body;
 
     if (!name) {
       return res.send({ error: "Name is required" });
@@ -51,6 +51,10 @@ exports.registerController = async (req, res) => {
       return res.send({ error: "Phone number not valid" });
     }
 
+    if (!profilePic) {
+      return res.send({ error: "Please add profile pic" });
+    }
+
     const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
@@ -69,6 +73,7 @@ exports.registerController = async (req, res) => {
       email,
       password: hashedPassword,
       phone,
+      profilePic,
     });
 
     await user.save();
@@ -79,6 +84,7 @@ exports.registerController = async (req, res) => {
       name,
       email,
       phone,
+      profilePic,
     });
   } catch (error) {
     res.status(500).send({
@@ -137,6 +143,8 @@ exports.loginController = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        profilePic: user.profilePic,
       },
       // Send the token to our client (Frontend)
     });

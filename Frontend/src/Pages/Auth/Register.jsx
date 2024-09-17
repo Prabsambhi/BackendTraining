@@ -25,13 +25,34 @@ schema
   .oneOf(["Passw0rd", "Password123", "12345678"]); // Blacklist these values
 
 const Register = () => {
-  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [profilePic, setProfilePic] = useState({});
 
   const [errors, setErrors] = useState({});
+
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/auth/upload-profile-pic",
+        formData
+      );
+
+      setProfilePic({
+        url: data.url,
+        public_id: data.public_id,
+      });
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const validateForm = () => {
     let formErrors = {};
@@ -61,6 +82,10 @@ const Register = () => {
       formErrors.phone = "Phone number is required";
     } else if (!validator.isMobilePhone(phone, "any")) {
       formErrors.phone = "Phone number not valid";
+    }
+
+    if (!profilePic || !profilePic.url) {
+      formErrors.profilePic = "Please add your image";
     }
 
     setErrors(formErrors);
@@ -93,6 +118,7 @@ const Register = () => {
         email,
         password,
         phone,
+        profilePic: profilePic?.url,
       });
       console.log(response);
     } catch (error) {
@@ -136,6 +162,12 @@ const Register = () => {
           onChange={(e) => setPhone(e.target.value)}
         />
         {errors.phone && <p style={{ color: "red" }}>{errors.phone}</p>}
+
+        <label>Profile Pic</label>
+        <input type="file" onChange={handleImage} />
+        {errors.profilePic && (
+          <p style={{ color: "red" }}>{errors.profilePic}</p>
+        )}
 
         <button type="submit">Submit</button>
       </form>

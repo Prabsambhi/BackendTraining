@@ -1,10 +1,8 @@
 const express = require("express");
+const fs = require("fs");
 const router = express.Router();
 const cloudinary = require("cloudinary");
 const ExpressFormiddable = require("express-formidable");
-
-const dotenv = require("dotenv");
-dotenv.config();
 
 const { requiredSignIn } = require("../middleware/authMiddleware");
 
@@ -13,8 +11,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 });
-
-console.log(process.env.CLOUDINARY_NAME, process.env.CLOUDINARY_KEY);
 
 const {
   registerController,
@@ -52,9 +48,15 @@ router.post(
         });
       }
 
-      console.log(req.files.image);
-
       const result = await cloudinary.uploader.upload(req.files.image.path);
+
+      fs.unlink(req.files.image.path, (err) => {
+        if (err) {
+          console.log("Failed to delete temp file", err);
+        } else {
+          console.log("Temporary file is deleted successfully");
+        }
+      });
 
       console.log(result);
 
