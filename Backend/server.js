@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const demoRoute = require("./routes/demoRoute");
 const authRoutes = require("./routes/authRoutes");
+const blogRoute = require("./routes/blogRoutes");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use("/", demoRoute);
 app.use("/auth", authRoutes);
+app.use("/blog", blogRoute);
 
 const PORT = process.env.PORT;
 
