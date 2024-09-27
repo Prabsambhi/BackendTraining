@@ -8,6 +8,8 @@ import Home from "./Pages/home";
 import Dashboard from "./Pages/UserPrivatePages/dashboard";
 import PrivateRoute from "./PrivateRoute/privateRoute";
 import UserProfile from "./Pages/UserPrivatePages/userProfile";
+import AddBlog from "./Pages/UserPrivatePages/AddBlog";
+import AllBlogs from "./Pages/AllBlogs";
 
 const App = () => {
   return (
@@ -19,11 +21,13 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
+        <Route path="/all-blogs" element={<AllBlogs />} />
+
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/userProfile" element={<UserProfile />} />
+          <Route path="/addBlog" element={<AddBlog />} />
         </Route>
-        
       </Routes>
     </>
   );

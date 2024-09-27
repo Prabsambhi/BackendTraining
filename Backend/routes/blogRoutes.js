@@ -10,6 +10,9 @@ const {
   addBlogController,
   getAllBlog,
   deleteBlog,
+  getSingleBlog,
+  toggleLike,
+  addComment,
 } = require("../controller/blogController");
 
 cloudinary.config({
@@ -20,7 +23,16 @@ cloudinary.config({
 
 router.post("/add-blog", requiredSignIn, addBlogController);
 router.get("/get-all-blogs", getAllBlog);
+router.get("/get-single-blog/:id", getSingleBlog);
 router.delete("/delete-blog/:id", requiredSignIn, deleteBlog);
+
+// ToggleLike
+
+router.post("/toggle-like/:id", requiredSignIn, toggleLike);
+
+// Add Comment
+
+router.post("/add-comment/:id", requiredSignIn, addComment);
 
 router.post(
   "/upload-blog-pic",
@@ -35,6 +47,8 @@ router.post(
           error: "No image file found",
         });
       }
+
+      console.log(req.files.image.path);
 
       const result = await cloudinary.uploader.upload(req.files.image.path);
 

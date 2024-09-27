@@ -146,6 +146,7 @@ exports.loginController = async (req, res) => {
         phone: user.phone,
         profilePic: user.profilePic,
       },
+      token
       // Send the token to our client (Frontend)
     });
   } catch (error) {
