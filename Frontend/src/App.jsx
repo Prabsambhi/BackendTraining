@@ -10,6 +10,7 @@ import PrivateRoute from "./PrivateRoute/privateRoute";
 import UserProfile from "./Pages/UserPrivatePages/userProfile";
 import AddBlog from "./Pages/UserPrivatePages/AddBlog";
 import AllBlogs from "./Pages/AllBlogs";
+import BlogDetails from "./Pages/blogDetails";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         <Route path="/all-blogs" element={<AllBlogs />} />
+        <Route path="/blog-details/:id" element={<BlogDetails />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
