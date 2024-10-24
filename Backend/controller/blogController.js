@@ -45,6 +45,39 @@ exports.addBlogController = async (req, res) => {
   }
 };
 
+exports.editBlogController = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+
+    const { title, content, author, coverImage } = req.body;
+
+    const blog = await blogModel.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).send({ error: "Blog not found" });
+    }
+
+    if (title) blog.title = title;
+    if (content) blog.content = content;
+    if (author) blog.author = author;
+    if (coverImage) blog.coverImage = coverImage;
+
+    await blog.save();
+
+    res.status(200).send({
+      success: true,
+      message: "Blog updated successfully",
+      blog,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error in updating the Blog",
+      error,
+    });
+  }
+};
+
 exports.getAllBlog = async (req, res) => {
   try {
     const blogs = await blogModel.find().populate("author", "name profilePic");
@@ -182,6 +215,14 @@ exports.addComment = async (req, res) => {
       return res.status(404).send({
         success: false,
         message: "blog not found",
+        error,
+      });
+    }
+
+    if (!comment.trim()) {
+      return res.status(404).send({
+        success: false,
+        message: "Comment cannot be empty",
         error,
       });
     }

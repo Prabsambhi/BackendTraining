@@ -13,6 +13,7 @@ const {
   getSingleBlog,
   toggleLike,
   addComment,
+  editBlogController,
 } = require("../controller/blogController");
 
 cloudinary.config({
@@ -22,6 +23,7 @@ cloudinary.config({
 });
 
 router.post("/add-blog", requiredSignIn, addBlogController);
+router.put("/edit-blog/:id", requiredSignIn, editBlogController);
 router.get("/get-all-blogs", getAllBlog);
 router.get("/get-single-blog/:id", getSingleBlog);
 router.delete("/delete-blog/:id", requiredSignIn, deleteBlog);
